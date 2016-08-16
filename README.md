@@ -30,3 +30,20 @@ When using nesting and updating records you are required to supply a primary key
 ## Tables not in ministry platform
 If you have added a table in SQL but not created the page for it in ministry platform, that table is not accesseble by the REST API.
 
+
+## Page's Filter_Clause apply to the API 
+The Filter_Clause column in the Pages table also applies to the REST API. 
+
+For example, if there was a Filter_Clause on the Contacts page record
+``` SQL
+Contact_ID <> 1234
+```
+The following GET call would return nothing
+``` javascript
+[{
+  Contact_ID: 1234
+}]
+```
+
+## Joins
+-- needed

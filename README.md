@@ -1,4 +1,4 @@
-# mp-rest-gotchas
+# Ministry Platform REST Documentation
 A list of realizations/gotchas when developing with ministry platforms REST API
 
 

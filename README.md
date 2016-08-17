@@ -3,7 +3,7 @@ A list of realizations/gotchas when developing with ministry platforms REST API
 
 
 ## Nesting on tables with columns that have required relationships
-If you want to create a contact record and a participant record in one call you must make the participant record the bass and then link the contact. This is because the participant record has a required column of Contact_ID but the contact record's Participant_Record column is not required
+If you want to create a contact record and a participant record in one call you must make the participant record the base and then link the contact. This is because the participant record has a required column of Contact_ID but the contact record's Participant_Record column is not required
 
 ```javascript
 [{

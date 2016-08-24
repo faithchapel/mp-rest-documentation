@@ -1,77 +1,199 @@
 # Ministry Platform REST Documentation
-A list of realizations/gotchas when developing with ministry platforms REST API
+Basic documentation on how to work with the Ministry Platform REST API. This is a general list of things that we have found that are not well explained through current documentation.
 
 ## Reading Records
 
 ### Get a list of tables
 This will return all tables that the user has access to.
 ```
-tables/
+GET tables/
 ```
 
 ### Get all records in a table
 This returns all records on the given table.
 ```
-tables/contacts/
+GET tables/contacts/
 ```
 
 ### Get a specific record
 This returns a single record on the given table with the specified primary key value.
 ```
-tables/contacts/1
+GET tables/contacts/1
 ```
 
 ### Get a filtered list
 This returns a all records that match the filter requirements
 ```
-tables/contacts?$Filter=Last_Name='Administrator'
+GET tables/contacts?$Filter=Last_Name='Administrator'
 ```
 
 ### Get only specific fields
 This returns the specified fields on the requested record(s)
 ```
-tables/contacts/1?$Select=First_Name, Last_Name
+GET tables/contacts/1?$Select=First_Name, Last_Name
 ```
 
 ### Select and join another table
 Returns all contact fields and joins the Household table and get the linked Household_Name
 ```
-tables/contacts/1?$Select=Contacts.*, Household_ID_Table.Household_Name
+GET tables/contacts/1?$Select=Contacts.*, Household_ID_Table.Household_Name
 ```
 
 ### Get a specified number of records
 This returns the top 5 contacts
 ```
-tables/contacts?$Top=5
+GET tables/contacts?$Top=5
 ```
 This returns the top 5 contacts after skipping the first 5
 ```
-tables/contacts?$Top=5&$Skip=5
+GET tables/contacts?$Top=5&$Skip=5
 ```
 
 ### Get a distinct record set
 Returns a distinct list of all cities
 ```
-tables/addresses?$Select=City&$Distinct=true
+GET tables/addresses?$Select=City&$Distinct=true
 ```
 
 ### Order record set
 Orders the response by the specified column
 ```
-tables/addresses?$OrderBy=City
+GET tables/addresses?$OrderBy=City
 ```
 
 ### Get records and group by column with aggregate function
 Selects all donations, sums the Donation_Amount and groups by Donor_ID
 ```
-tables/donations?$Select=Donor_ID,SUM(Donation_Amount) AS Amount&$GroupBy=Donor_ID
+GET tables/donations?$Select=Donor_ID,SUM(Donation_Amount) AS Amount&$GroupBy=Donor_ID
 ```
 
 ## Creating Records
 
+### Create a single record
+To create a single record, POST an array containing a single JSON object with all fields that should be included for the new record. All fields that do not allow nulls and do not specify a default value are considered required. 
+```
+POST tables/households
+```
+
+```javascript
+[
+  {
+  	Household_Name: "Household, Test",
+	Home_Phone: "123-456-7890"
+  }
+]
+```
+
+### Create a series of records
+To create a multiple records, POST an array containing JSON objects for each record you would like to create.
+
+```
+POST tables/households
+```
+
+```javascript
+[
+  {
+  	Household_Name: "Household, First",
+	Home_Phone: "123-456-7890"
+  },
+  {
+  	Household_Name: "Household, Second",
+	Home_Phone: "098-765-4321"
+  }
+]
+```
+
+### Create a nested set of records
+To create a nested set of records, assign a JSON object to a field with a foreign key relationship to another table.
+
+```
+POST tables/households
+```
+
+```javascript
+[
+  {
+  	Household_Name: "Household, Test",
+  	Address_ID: {
+    	Address_Line_1: "123 Test St.",
+        City: "TestCity",
+        "State/Region": "TX",
+        Postal_Code: 73301
+    }
+  }
+]
+```
+This will create both a new household and an address linked to the household.
+
+### Create nested dependent records
+To create a set of nested records where one or more records is dependant on another record, the order of creation is important. Consider the following. If I would like to create a contact, and participant I may try the following.
+
+```
+POST tables/contacts
+```
+
+```javascript
+//This code will not work!
+[
+  {
+  First_Name: "Test",
+  Last_Name: "Contact",
+  Display_Name: "Contact, Test",
+  Company: false,
+  Participant_Record: {
+  		Participant_Type_ID: 4,
+        Participant_Start_Date: "2016-03-15 09:23:51.000"
+    }
+  }
+]
+```
+This will not work because the Contact_ID field on the participant record is a required field. A contact needs to exist to link the participant to and the REST API starts at the deepest level of the nesting structure and works backwards. To make this work you need to invert the nesting.
+
+```
+POST tables/participants
+```
+
+```javascript
+[
+  {
+    Participant_Type_ID: 4,
+    Participant_Start_Date: "2016-03-15 09:23:51.000",
+    Contact_ID: {
+      First_Name: "Test",
+      Last_Name: "Contact",
+      Display_Name: "Contact, Test",
+      Company: false
+	}
+  }
+]
+```
+This will work because a contact record is not required to have a participant. The Contact gets created first, and it's ID gets passed into the participant record when it is created.
+
 ## Updating Records
 
+### Update a single record
+
+### Update a series of records
+
+### Update a nested set of records
+When using nesting and updating records you are required to supply a primary key for each nested object
+```javascript
+[{
+  Contact_ID: 1234,
+  Household_ID: {
+    Household_ID: 1234, // This value is required
+    Household_Name: "Steve's Household"
+  }
+}]
+```
+
+
 ## Deleting Records
+
+### Delete a single record
+
+### Delete a series of records
 
 
 ## Nesting on tables with columns that have required relationships
@@ -88,16 +210,7 @@ If you want to create a contact record and a participant record in one call you 
 ```
 
 ## Nesting with updating records
-When using nesting and updating records you are required to supply a primary key for each nested object
-```javascript
-[{
-  Contact_ID: 1234,
-  Household_ID: {
-    Household_ID: 1234, // This value is required
-    Household_Name: "Steve's Household"
-  }
-}]
-```
+
 
 ## Tables not in ministry platform
 If you have added a table in SQL but not created the page for it in ministry platform, that table is not accessible by the REST API.

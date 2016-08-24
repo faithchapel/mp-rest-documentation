@@ -104,6 +104,21 @@ POST tables/households
 ]
 ```
 
+### Create a record as a specific user
+To create a record as a specific user, specify the user id using the $User keyword in the query string. 
+```
+POST tables/households?$User=96
+```
+
+```javascript
+[
+  {
+  	Household_Name: "Household, Test",
+	Home_Phone: "123-456-7890"
+  }
+]
+```
+
 ### Create a nested set of records
 To create a nested set of records, assign a JSON object to a field with a foreign key relationship to another table.
 
@@ -173,8 +188,53 @@ This will work because a contact record is not required to have a participant. T
 ## Updating Records
 
 ### Update a single record
+To update a single record, PUT an array containing a single JSON object with the primary key value of the record you would like to change, and any fields that should update. 
+```
+PUT tables/households
+```
+
+```javascript
+[
+  {
+  	Household_ID: 1234,
+	Home_Phone: "123-456-7890"
+  }
+]
+```
 
 ### Update a series of records
+To update multiple records, PUT an array containing JSON objects for each record you would like to update.
+```
+PUT tables/households
+```
+
+```javascript
+[
+  {
+  	Household_ID: 1234,
+	Home_Phone: "123-456-7890"
+  },
+  {
+  	Household_ID: 1235,
+	Home_Phone: "098-765-4321"
+  }
+]
+```
+
+### Update a record as a specific user
+To update a record as a specific user, specify the user id using the $User keyword in the query string. 
+```
+PUT tables/households?$User=96
+```
+
+```javascript
+[
+  {
+  	Household_ID: 1234,
+	Home_Phone: "123-456-7890"
+  }
+]
+```
 
 ### Update a nested set of records
 When using nesting and updating records you are required to supply a primary key for each nested object
@@ -188,44 +248,43 @@ When using nesting and updating records you are required to supply a primary key
 }]
 ```
 
-
 ## Deleting Records
 
 ### Delete a single record
 
 ### Delete a series of records
 
+## Ministry Platform Configuration
 
-## Nesting on tables with columns that have required relationships
-If you want to create a contact record and a participant record in one call you must make the participant record the base and then link the contact. This is because the participant record has a required column of Contact_ID but the contact record's Participant_Record column is not required
-
-```javascript
-[{
-  Participant_Type_ID: 1,
-  Contact_ID: {
-    First_Name: "Steve",
-    ...
-  }
-}]
+### OAUTH Client Credentials
+Client credentials for OAUTH are specified in the MinistryPlatform Web.config file. They are placed in Platform.Security.Clients in the following format.
+```xml
+<clients>
+	<client clientId="YourApplicationName" clientSecret="YourClientSecret" callbackAddress="" tokenLifetime="00:30:00"></client>
+</clients>
 ```
 
-## Nesting with updating records
+### REST API User
+Unless a user is explictly specified using the $User keyword in each POST, PUT, or DELETE call, records created through the REST API are created AnonymousUserId specified in the MinistryPlatformAPI Web.config file. Security roles applied to that user are used in authorizing requests.
 
+### Security Roles
+Access to tables is restricted through security roles applied to the user making the call. Giving users access to pages gives them access to the underlying tables.
 
-## Tables not in ministry platform
-If you have added a table in SQL but not created the page for it in ministry platform, that table is not accessible by the REST API.
+### Stored Procedure Access
+To use a stored procedure two things need to happen. First, there needs to be a record referencing the stored procedure in the System Setup/API Procedures page. Secondly, the user needs a security role applied to it with the API Procedure linked to the security role. This is done through the API Procedures sub page on the Security Roles page.
 
+### Table Accessibility
+To be accessible through the REST API tables must be associated with pages.
+If you have added a table in SQL the table will not be accessible by the REST API until a page has been created for it in MP.
 
-## Page's Filter_Clause apply to the API 
-The Filter_Clause column in the Pages table also applies to the REST API. 
+### MP Page Filter_Clause applies to the API 
+The Filter_Clause column in the Pages table also applies to the REST API. Pages that filter out parts of the data set in the page will also filter out the same data from the API. If there is a filtered page, and an unfiltered page, and the user's security role allows access to both pages, the unfiltered page will be used. 
 
 For example, if there was a Filter_Clause on the Contacts page record
 ``` SQL
 Contact_ID <> 1234
 ```
 The following GET call would return nothing
-``` javascript
-[{
-  Contact_ID: 1234
-}]
+```
+GET tables/contacts/1234 
 ```

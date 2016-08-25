@@ -27,7 +27,6 @@ Basic documentation on how to work with the Ministry Platform REST API. This is 
     + [Update a nested set of records](#update-a-nested-set-of-records)
   * [Deleting Records](#deleting-records)
     + [Delete a single record](#delete-a-single-record)
-    + [Delete a series of records](#delete-a-series-of-records)
   * [Ministry Platform Configuration](#ministry-platform-configuration)
     + [OAUTH Client Credentials](#oauth-client-credentials)
     + [REST API User](#rest-api-user)
@@ -285,10 +284,13 @@ When using nesting and updating records you are required to supply a primary key
 ```
 
 ## Deleting Records
+Deleting records is requires caution. There is nothing to stop you from doing serious harm to your database, if you have permission to delete something, you can delete it. Be careful, write your deletes in a sandbox and test extensively. 
 
 ### Delete a single record
-
-### Delete a series of records
+To delete a single record.
+```
+DELETE tables/households/116022
+```
 
 ## Ministry Platform Configuration
 

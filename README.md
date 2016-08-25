@@ -296,8 +296,8 @@ DELETE tables/households/116022
 
 ## Ministry Platform Configuration
 
-### OAUTH Client Credentials
-Client credentials for OAUTH are specified in the MinistryPlatform Web.config file. They are placed in Platform.Security.Clients in the following format.
+### OAuth Client Credentials
+To use the Client Credentials grant flow for OAuth, credentials need to be specified in the MinistryPlatform Web.config file. They are placed in Platform.Security.Clients in the following format.
 ```xml
 <clients>
 	<client clientId="YourApplicationName" clientSecret="YourClientSecret" callbackAddress="" tokenLifetime="00:30:00"></client>
@@ -305,7 +305,7 @@ Client credentials for OAUTH are specified in the MinistryPlatform Web.config fi
 ```
 
 ### REST API User
-Unless a user is explictly specified using the $User keyword in each POST, PUT, or DELETE call, records created through the REST API are created AnonymousUserId specified in the MinistryPlatformAPI Web.config file. Security roles applied to that user are used in authorizing requests.
+While using the Client Credentials grant flow, unless a user is explicitly specified using the $User keyword in each POST, PUT, or DELETE call, records created through the REST API are created using the AnonymousUserId specified in the MinistryPlatformAPI Web.config file. Security roles applied to that user are used in authorizing requests regardless of what user is specified with the $User keyword.
 
 ### Security Roles
 Access to tables is restricted through security roles applied to the user making the call. Giving users access to pages gives them access to the underlying tables.

@@ -1,6 +1,42 @@
 # Ministry Platform REST Documentation
 Basic documentation on how to work with the Ministry Platform REST API. This is a general list of things that we have found that are not well explained through current documentation.
 
+## Table of Contents
+- [Ministry Platform REST Documentation](#ministry-platform-rest-documentation)
+  * [Reading Records](#reading-records)
+    + [Get a list of tables](#get-a-list-of-tables)
+    + [Get all records in a table](#get-all-records-in-a-table)
+    + [Get a specific record](#get-a-specific-record)
+    + [Get a filtered list](#get-a-filtered-list)
+    + [Get only specific fields](#get-only-specific-fields)
+    + [Select and join another table](#select-and-join-another-table)
+    + [Get a specified number of records](#get-a-specified-number-of-records)
+    + [Get a distinct record set](#get-a-distinct-record-set)
+    + [Order record set](#order-record-set)
+    + [Get records and group by column with aggregate function](#get-records-and-group-by-column-with-aggregate-function)
+  * [Creating Records](#creating-records)
+    + [Create a single record](#create-a-single-record)
+    + [Create a series of records](#create-a-series-of-records)
+    + [Create a record as a specific user](#create-a-record-as-a-specific-user)
+    + [Create a nested set of records](#create-a-nested-set-of-records)
+    + [Create nested dependent records](#create-nested-dependent-records)
+  * [Updating Records](#updating-records)
+    + [Update a single record](#update-a-single-record)
+    + [Update a series of records](#update-a-series-of-records)
+    + [Update a record as a specific user](#update-a-record-as-a-specific-user)
+    + [Update a nested set of records](#update-a-nested-set-of-records)
+  * [Deleting Records](#deleting-records)
+    + [Delete a single record](#delete-a-single-record)
+    + [Delete a series of records](#delete-a-series-of-records)
+  * [Ministry Platform Configuration](#ministry-platform-configuration)
+    + [OAUTH Client Credentials](#oauth-client-credentials)
+    + [REST API User](#rest-api-user)
+    + [Security Roles](#security-roles)
+    + [Stored Procedure Access](#stored-procedure-access)
+    + [Table Accessibility](#table-accessibility)
+    + [MP Page Filter_Clause applies to the API](#mp-page-filter-clause-applies-to-the-api)
+
+
 ## Reading Records
 
 ### Get a list of tables
@@ -238,9 +274,6 @@ PUT tables/households?$User=96
 
 ### Update a nested set of records
 When using nesting and updating records you are required to supply a primary key for each nested object
-```
-PUT tables/contacts
-```
 ```javascript
 [{
   Contact_ID: 1234,

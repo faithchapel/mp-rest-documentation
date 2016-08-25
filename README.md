@@ -274,13 +274,15 @@ PUT tables/households?$User=96
 ### Update a nested set of records
 When using nesting and updating records you are required to supply a primary key for each nested object
 ```javascript
-[{
-  Contact_ID: 1234,
-  Household_ID: {
-    Household_ID: 1234, // This value is required
-    Household_Name: "Steve's Household"
-  }
-}]
+[
+	{
+		Contact_ID: 1234,
+		Household_ID: {
+			Household_ID: 1234, // This value is required
+			Household_Name: "Steve's Household"
+		}
+	}
+]
 ```
 
 ## Deleting Records

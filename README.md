@@ -1,4 +1,4 @@
-# Ministry Platform REST Documentation
+# Ministry Platform REST API Documentation
 Basic documentation on how to work with the Ministry Platform REST API. This is a general list of things that we have found that are not well explained through current documentation.
 
 ## Table of Contents

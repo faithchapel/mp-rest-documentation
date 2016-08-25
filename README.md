@@ -1,5 +1,6 @@
 # Ministry Platform REST API Documentation
 Basic documentation on how to work with the Ministry Platform REST API. This is a general list of things that we have found that are not well explained through current documentation.
+This is intended as a supplement to the Swagger documentation (https://my.yourdomainname/ministryplatformapi/swagger). The Swagger documentation is a great resource that documents all of the REST API endpoints, and expected input and output. This document is not intended as a replacement for Swagger, but simply as an extension to fill in some gaps that are not included in that documentation.
 
 ## Table of Contents
 - [Ministry Platform REST Documentation](#ministry-platform-rest-documentation)

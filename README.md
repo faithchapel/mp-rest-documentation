@@ -3,7 +3,7 @@ Basic documentation on how to work with the Ministry Platform REST API. This is 
 
 This is intended as a supplement to the Swagger documentation (https://my.yourdomainname/ministryplatformapi/swagger). The Swagger documentation is a great resource that documents all of the REST API endpoints, and expected input and output. This document is not intended as a replacement for Swagger, but simply as an extension to fill in some gaps that are not included in that documentation.
 
-Some endpoints documented in Swagger are duplicated here for clarity and quick reference. For full details on those endpoints refer to Swagger. All examples given use the Tables resource, however the concepts should apply to most other resources available through the REST API.
+Some endpoints documented in Swagger are duplicated here for clarity and quick reference. For full details on those endpoints refer to Swagger. All examples given use the Tables resource, however the concepts should apply to most other resources available through the REST API. 
 
 ## Table of Contents
 - [Ministry Platform REST Documentation](#ministry-platform-rest-documentation)
@@ -61,9 +61,13 @@ GET tables/contacts/1
 ```
 
 ### Get a filtered list
-This returns a all records that match the filter requirements
+This returns all records that match the filter requirements
 ```
 GET tables/contacts?$Filter=Last_Name='Administrator'
+```
+Boolean logic is accepted in the filter
+```
+GET tables/contacts?$Filter=(Last_Name='Allan' AND Last_Name='Tavie') OR Last_Name='Administrator'
 ```
 
 ### Get only specific fields

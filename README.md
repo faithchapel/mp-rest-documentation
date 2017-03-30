@@ -77,7 +77,7 @@ GET tables/contacts/1?$Select=First_Name, Last_Name
 ```
 
 ### Select and join another table
-Returns all contact fields and joins the Household table and get the linked Household_Name
+Returns all contact fields and joins the Household table and gets the linked Household_Name
 ```
 GET tables/contacts/1?$Select=Contacts.*, Household_ID_Table.Household_Name
 ```
@@ -108,6 +108,24 @@ GET tables/addresses?$OrderBy=City
 Selects all donations, sums the Donation_Amount and groups by Donor_ID
 ```
 GET tables/donations?$Select=Donor_ID,SUM(Donation_Amount) AS Amount&$GroupBy=Donor_ID
+```
+
+### Get record and include audit log creation data
+Returns all contact fields and joins audit log creation data
+```
+GET tables/contacts/1?$Select=Contacts.*, dp_Created.*
+```
+
+### Get record and include audit log update data
+Returns all contact fields and joins audit log update data
+```
+GET tables/contacts/1?$Select=Contacts.*, dp_Updated.*
+```
+
+### Get the default image for a record
+Returns the default image for the given record
+```
+GET tables/contacts/1?$Select=dp_fileUniqueId
 ```
 
 ## Creating Records

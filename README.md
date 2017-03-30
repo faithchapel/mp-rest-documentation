@@ -18,6 +18,9 @@ Some endpoints documented in Swagger are duplicated here for clarity and quick r
     + [Get a distinct record set](#get-a-distinct-record-set)
     + [Order record set](#order-record-set)
     + [Get records and group by column with aggregate function](#get-records-and-group-by-column-with-aggregate-function)
+    + [Get record and include audit log creation data](#get-record-and-include-audit-log-creation-data)
+    + [Get record and include audit log update data](#get-record-and-include-audit-log-update-data)
+    + [Get the default image for a record](#get-the-default-image-for-a-record)
   * [Creating Records](#creating-records)
     + [Create a single record](#create-a-single-record)
     + [Create a series of records](#create-a-series-of-records)
@@ -123,7 +126,7 @@ GET tables/contacts/1?$Select=Contacts.*, dp_Updated.*
 ```
 
 ### Get the default image for a record
-Returns the default image for the given record
+Returns the file guid for the default image of the given record
 ```
 GET tables/contacts/1?$Select=dp_fileUniqueId
 ```

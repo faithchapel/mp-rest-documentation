@@ -125,19 +125,19 @@ POST tables/contacts/get
 ```
 ```json
 {
-  Ids: [
+  "Ids": [
     1,
     2,
     3
   ],
-  Select: "Last_Name,First_Name",
-  Filter: "Last_Name='Administrator'",
-  OrderBy: "Last_Name",
-  GroupBy: "Last_Name",
-  Having: "Last_Name='Administrator'",
-  Top: 5,
-  Skip: 2,
-  Distinct: true
+  "Select": "Last_Name,First_Name",
+  "Filter": "Last_Name='Administrator'",
+  "OrderBy": "Last_Name",
+  "GroupBy": "Last_Name",
+  "Having": "Last_Name='Administrator'",
+  "Top": 5,
+  "Skip": 2,
+  "Distinct": true
 }
 ```
 
@@ -363,12 +363,12 @@ POST tables/households/delete
 ```
 ```json
 {
-  Ids: [
+  "Ids": [
     116022,
     116023,
     116024
   ],
-  User: 96
+  "User": 96
 }
 ```
 

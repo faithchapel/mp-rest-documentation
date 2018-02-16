@@ -18,6 +18,7 @@ Some endpoints documented in Swagger are duplicated here for clarity and quick r
     + [Get a distinct record set](#get-a-distinct-record-set)
     + [Order record set](#order-record-set)
     + [Get records and group by column with aggregate function](#get-records-and-group-by-column-with-aggregate-function)
+    + [Get records using POST method](#get-records-using-post-method)
     + [Get record and include audit log creation data](#get-record-and-include-audit-log-creation-data)
     + [Get record and include audit log update data](#get-record-and-include-audit-log-update-data)
     + [Get the default image for a record](#get-the-default-image-for-a-record)
@@ -34,6 +35,8 @@ Some endpoints documented in Swagger are duplicated here for clarity and quick r
     + [Update a nested set of records](#update-a-nested-set-of-records)
   * [Deleting Records](#deleting-records)
     + [Delete a single record](#delete-a-single-record)
+    + [Delete a single record as a specific user](#delete-a-single-record-as-a-specific-user)
+    + [Delete multiple records](#delete-multiple-records)
   * [Ministry Platform Configuration](#ministry-platform-configuration)
     + [OAUTH Client Credentials](#oauth-client-credentials)
     + [REST API User](#rest-api-user)
@@ -111,6 +114,31 @@ GET tables/addresses?$OrderBy=City
 Selects all donations, sums the Donation_Amount and groups by Donor_ID
 ```
 GET tables/donations?$Select=Donor_ID,SUM(Donation_Amount) AS Amount&$GroupBy=Donor_ID
+```
+
+### Get records using POST method
+This returns all records that match the specified requirements, allowing for a very long `Filter` or `Select` clause, or retrieving by primary key for multiple IDs. Like the other table retrieval calls, you can specify [Select](#select-and-join-another-table), [Filter](#get-a-filtered-list), [OrderBy](#order-record-set), [GroupBy](#get-records-and-group-by-column-with-aggregate-function), `Having`, [Top, Skip](#get-a-specified-number-of-records), and [Distinct](#get-a-distinct-record-set).  Note that **unlike** the other retrieval calls, this actually uses an HTTP `POST` instead of a `GET`.
+
+**Important Usage Note:** You should not include the `Ids` property if you wish to use the `Filter`.  If you include `Ids`, this behaves just like ["Get a specific record"](#get-a-specific-record), but for multiple primary keys. Both are included in the example below, just to illustrate all possible options.
+```
+POST tables/contacts/get
+```
+```json
+{
+  "Ids": [
+    1,
+    2,
+    3
+  ],
+  "Select": "Last_Name,First_Name",
+  "Filter": "Last_Name='Administrator'",
+  "OrderBy": "Last_Name",
+  "GroupBy": "Last_Name",
+  "Having": "Last_Name='Administrator'",
+  "Top": 5,
+  "Skip": 2,
+  "Distinct": true
+}
 ```
 
 ### Get record and include audit log creation data
@@ -321,6 +349,27 @@ Deleting records is requires caution. There is nothing to stop you from doing se
 To delete a single record.
 ```
 DELETE tables/households/116022
+```
+### Delete a single record as a specific user
+To delete a record as a specific user, specify the user id using the $User keyword in the query string. 
+```
+DELETE tables/households/116022?$User=96
+```
+
+### Delete multiple records
+To delete multiple records. Note that unlike ["Delete a single record"](#delete-a-single-record), this uses an HTTP `POST` instead of `DELETE`. You may also specify a [User](#delete-a-single-record-as-a-specific-user) id to delete as a specific MinistryPlatform user.
+```
+POST tables/households/delete
+```
+```json
+{
+  "Ids": [
+    116022,
+    116023,
+    116024
+  ],
+  "User": 96
+}
 ```
 
 ## Ministry Platform Configuration

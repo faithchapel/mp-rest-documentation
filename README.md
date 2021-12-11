@@ -75,6 +75,10 @@ Boolean logic is accepted in the filter
 ```
 GET tables/contacts?$Filter=(Last_Name='Allan' AND Last_Name='Tavie') OR Last_Name='Administrator'
 ```
+When a filter value includes an apostrophe, replace the apostrophe with a double single-quote
+```
+GET tables/contacts?$Filter=Last_Name='O''Malley'
+```
 
 ### Get only specific fields
 This returns the specified fields on the requested record(s)
